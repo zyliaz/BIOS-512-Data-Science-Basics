@@ -1,0 +1,161 @@
+---
+title: "BIOS 512 Homework 2"
+output: pdf_document
+---
+
+## Load Necessary Packages...
+
+If you need to install tidyverse, you can use install.packages("tidyverse"). If you already have tidyverse installed, you can just load the package:
+
+```{r, results="hide", message=FALSE, warning=FALSE}
+library(tidyverse);
+```
+
+## Question 1
+
+What are three ways that we can assign the value of 25 to y?
+```{r}
+y <- 25
+y = 25
+y <<- 25
+```
+
+## Question 2
+
+How would I print the following line, including the quotes, in R?\
+**He said, "I'm Garth Marenghi. Author. Dreamweaver. Visionary. Plus actor."**
+```{r}
+cat('He said, "I\'m Garth Marenghi. Author. Dreamweaver. Visionary. Plus actor."')
+
+cat("He said, \"I'm Garth Marenghi. Author. Dreamweaver. Visionary. Plus actor.\"")
+```
+
+## Question 3
+
+What if I wanted to add backslashes into the statement from Question 1 to make the statement below?\
+**He said, "I'm Garth Marenghi. Author\\Dreamweaver\\Visionary. Plus actor."**
+```{r}
+cat('He said, "I\'m Garth Marenghi. Author\\\\Dreamweaver\\\\Visionary. Plus actor."')
+```
+
+## Question 4
+
+Show two ways to get the following array: 1 2 3
+```{r}
+1:3
+c(1, 2, 3)
+```
+
+## Question 5
+
+What does R call things like +, -, sin(), c(), etc? What about \<-?
+```{r}
+#They are all functions in R. 
+```
+
+## Question 6
+
+What's the difference in the way R processes the while() and the for() below?
+
+```{r}
+x <- 0;
+while (x <= 3) {
+    x <- x + 1;
+}
+x
+
+for(y in c(1,2,3)) {
+     y <- y + 1;
+}
+y
+```
+In while loops, the code continues to run until a condition is met. In for loops, the code runs with a predefined collection of values.
+
+## Question 7
+
+Create the Pythagorean formula and evaluate it with a=3 and b=4. Print the output.
+```{r}
+pythagorean <- function(a,b){
+  l <- sqrt(a*a + b*b);
+  c(l);
+}
+pythagorean(3,4)
+```
+
+## Question 8
+
+Load the help for the built in sin() function.
+```{r}
+help(sin)
+```
+
+## Question 9
+
+Which version of the counter function works? What is the difference in the way R processes the two functions?
+
+```{r}
+counter1 <- function(start, step){
+    val <- start;
+    function(){
+        old_val <- val;
+        val <- val + step;
+        old_val;
+    }
+}
+counter_from_1 <- counter1(1,1);
+counter_from_1()
+counter_from_1()
+
+counter2 <- function(start, step){
+    val <- start;
+    function(){
+        old_val <- val;
+        val <<- val + step;
+        old_val;
+    }
+}
+counter_from_1 <- counter2(1,1);
+counter_from_1()
+counter_from_1()
+```
+The second version works. The differnece is with the function that asgin values on line val ? val + step. Counter1 uses <- while counter2 uses <<- to asign new values. <<- in R is changing the value outside of the function's environment, whereas <- is changing within the environment. <<- works because it changes the val after running the function(). <- doesn't work because it only changes the val inside the function() and didn't update the val. This means updated val is erase after counter1 function is called so the returned value does not change for counter1. 
+
+## Question 10
+
+a)  Use read_csv the cars.csv and store it in a data frame.
+b)  Then, group the data frame by Make, get averages across the numeric variables, and then sort by Volume in descending order. Hint: Use summarise(across(c(<variable list>), mean)) to get the averages.
+```{r}
+cars <- read_csv('cars.csv')
+cars %>% 
+  group_by(Make) %>% 
+  summarise(across(c(Volume, Weight, CO2), mean)) %>% 
+  arrange(desc(Volume))
+```
+
+## Question 11
+
+Make a function that returns the Fibonacci sequence, then call it 7 times to return the first 7 values of the sequence. Use the correct counter function from question 9 for inspiration.
+
+```{r} 
+fib <- function(){
+  start <- 0;
+  add <- 1;
+    function(){
+        old_fib <- add
+        new_fib <- start + add;
+        start <<- add;
+        add <<- new_fib;
+        old_fib
+        ;
+    }
+}
+fib <- fib()
+fib()
+fib()
+fib()
+fib()
+fib()
+fib()
+fib()
+```
+
